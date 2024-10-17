@@ -1,0 +1,29 @@
+services:
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+    container_name: nginx_con
+    depends_on:
+      - php
+
+  php:
+    restart: always
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - GROUP_APP=${GROUP_APP}
+        - USER_APP=${USER_APP}
+    ports:
+      - "9000:9000"
+    container_name: php_con
+    environment:
+      - GROUP_APP=${GROUP_APP}
+      - USER_APP=${USER_APP}
