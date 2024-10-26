@@ -8,9 +8,10 @@ services:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
     ports:
-      - "81:81"
+      - "8076:80"
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./../app/frontend:/var/www/html
     container_name: nginx_app
     depends_on:
       - php
@@ -41,8 +42,8 @@ services:
       args:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
-#    volumes:
-#      - ./../app/pcheliki.monolit:/var/www/html
+    volumes:
+      - ./../app/frontend:/var/www/html
     working_dir: /var/www/html
     container_name: npm_app
     command: tail -f /dev/null
