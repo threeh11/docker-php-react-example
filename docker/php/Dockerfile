@@ -1,10 +1,11 @@
 FROM alpine:3.20.3
 
 ARG PHP_VERSION=83
-ARG GROUP_APP=www-data
-ARG USER_APP=www-data
+ARG GROUP_APP=threeh
+ARG USER_APP=threeh
 
 RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
+RUN apk add --no-cache git
 
 RUN apk add --no-cache bash && \
     sed -i 's/bin\/ash/bin\/bash/g' /etc/passwd
@@ -46,7 +47,8 @@ RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     rm -rf composer-setup.php
 
-RUN addgroup -S ${GROUP_APP} && adduser -S ${USER_APP} -G ${GROUP_APP}
+RUN addgroup --system --gid 1000 ${USER_APP} \
+    && adduser --system --uid 1000 --ingroup ${USER_APP} ${USER_APP}
 
 RUN mkdir -p /var/log/php${PHP_VERSION} && \
     touch /var/log/php${PHP_VERSION}/error.log && \
@@ -55,8 +57,10 @@ RUN mkdir -p /var/log/php${PHP_VERSION} && \
 
 RUN mkdir -p /run/php
 
-USER ${USER_APP}
 COPY php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+
+USER ${USER_APP}
+
 WORKDIR /var/www/html
 
 CMD ["/usr/sbin/php-fpm83", "-F"]

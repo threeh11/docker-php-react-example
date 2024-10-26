@@ -8,10 +8,14 @@ services:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
     ports:
-      - "81:81"
+      - "8076:80"
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./../app/:/var/www/html
     container_name: nginx_app
+    environment:
+      - GROUP_APP=${GROUP_APP}
+      - USER_APP=${USER_APP}
     depends_on:
       - php
     networks:
@@ -27,8 +31,10 @@ services:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
     ports:
-      - "9000:9000"
+      - "9003:9000"
     container_name: php_app
+    volumes:
+      - ./../app/backend:/var/www/html/backend
     environment:
       - GROUP_APP=${GROUP_APP}
       - USER_APP=${USER_APP}
