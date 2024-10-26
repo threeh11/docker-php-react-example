@@ -31,7 +31,7 @@ services:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
     ports:
-      - "9003:9000"
+      - "9000:9000"
     container_name: php_app
     volumes:
       - ./../app/backend:/var/www/html/backend
@@ -47,8 +47,8 @@ services:
       args:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
-#    volumes:
-#      - ./../app/pcheliki.monolit:/var/www/html
+    volumes:
+      - ./../app/frontend:/var/www/html
     working_dir: /var/www/html
     container_name: npm_app
     command: tail -f /dev/null
