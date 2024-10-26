@@ -5,12 +5,14 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "81:81"
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d
-    container_name: nginx_con
+    container_name: nginx_app
     depends_on:
       - php
+    networks:
+      - app-network
 
   php:
     restart: always
@@ -23,7 +25,13 @@ services:
         - USER_APP=${USER_APP}
     ports:
       - "9000:9000"
-    container_name: php_con
+    container_name: php_app
     environment:
       - GROUP_APP=${GROUP_APP}
       - USER_APP=${USER_APP}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
