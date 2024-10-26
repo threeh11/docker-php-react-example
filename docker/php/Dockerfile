@@ -57,10 +57,10 @@ RUN mkdir -p /var/log/php${PHP_VERSION} && \
 
 RUN mkdir -p /run/php
 
-COPY php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+COPY php-fpm.conf /etc/php${PHP_VERSION}/php-fpm.d/www.conf
 
 USER ${USER_APP}
 
 WORKDIR /var/www/html
 
-CMD ["/usr/sbin/php-fpm83", "-F"]
+CMD ["php-fpm83", "-F"]

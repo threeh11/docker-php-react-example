@@ -31,7 +31,7 @@ services:
         - GROUP_APP=${GROUP_APP}
         - USER_APP=${USER_APP}
     ports:
-      - "9000:9000"
+      - "9003:9003"
     container_name: php_app
     volumes:
       - ./../app/backend:/var/www/html/backend
