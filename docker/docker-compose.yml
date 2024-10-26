@@ -4,6 +4,9 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+      args:
+        - GROUP_APP=${GROUP_APP}
+        - USER_APP=${USER_APP}
     ports:
       - "81:81"
     volumes:
@@ -31,6 +34,18 @@ services:
       - USER_APP=${USER_APP}
     networks:
       - app-network
+  npm:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+      args:
+        - GROUP_APP=${GROUP_APP}
+        - USER_APP=${USER_APP}
+#    volumes:
+#      - ./../app/pcheliki.monolit:/var/www/html
+    working_dir: /var/www/html
+    container_name: npm_app
+    command: tail -f /dev/null
 
 networks:
   app-network:
